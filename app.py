@@ -602,10 +602,7 @@ def load_ssm(param):
     return {}
 
 def get_twitter_api():
-    parent_dir = pathlib.Path(__file__).parent.parent.absolute()
-    creds_file = os.path.join(parent_dir, ".credentials")
     creds = load_ssm("/twitter/dev/credentials")
-    creds.update(load_credentials(creds_file))
     if "twitter" not in creds:
         raise ValueError("unable to find Twitter API key")
 
