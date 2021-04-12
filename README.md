@@ -1,5 +1,6 @@
 # retweet-visualizations
 * Run `pip install -r requirements.txt` to ensure you have all the necessary packages to run this.
+* Run `export AWS_PROFILE=lsm` to ensure you can access LSM Twitter keys.
 * Run `python app.py` to run the app.
 * The *Quick Stats* tab shows propagation time, benchmarks against previous tweets, and ranking of retweeters by number of followers. If you want to see these stats, fill in your bearer token in `tweet_stats.py`.
 * The *Insights* tab shows the retweet cascades.
