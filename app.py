@@ -25,11 +25,21 @@ from tweet_stats import *
 
 BEARER_TOKEN = 'AAAAAAAAAAAAAAAAAAAAABDqLgEAAAAAt6lwdR6KoXfai3ARtSEeadyp44k%3DNHwq0XVKHxiRwymPkL7L0SQ4pn30FLwZrLRlbg2bJZYWlljWDE'
 HEADERS = {'Authorization': 'Bearer {}'.format(BEARER_TOKEN)}
-OLDER_TWEETS = {'kerrywashington': ['1351210811574906897', '1351314103902453762',
-                                    '1351708601648254981', '1351708605179809792',
-                                    '1351917962744066054', '1351939067370381313',
-                                    '1351943779717062656', '1351983569829154817',
-                                    '1352140446403751937', '1352376698830905346']}
+# OLDER_TWEETS = {'kerrywashington': ['1351210811574906897', '1351314103902453762',
+#                                     '1351708601648254981', '1351708605179809792',
+#                                     '1351917962744066054', '1351939067370381313',
+#                                     '1351943779717062656', '1351983569829154817',
+#                                     '1352140446403751937', '1352376698830905346']}
+OLDER_TWEETS = {}
+dir = 'tweets/'
+tweet_files = [dir + f for f in os.listdir(dir) if os.path.isfile(dir + f) and f.endswith('json')]
+tweets = []
+for f in tweet_files:
+    start = f.rfind('/') + 1
+    end = f.rfind('.json')
+    tweet_id = f[start:end]
+    tweets.append(tweet_id)
+OLDER_TWEETS['kerrywashington'] = tweets
 
 external_stylesheets = [dbc.themes.COSMO]
 
@@ -319,8 +329,13 @@ def get_ranking(ranking):
 def update_ranking_old(tweet_id):
     if tweet_id:
         filename = 'tweets/' + tweet_id + '.json'
+        retweets = []
         with open(filename, 'r') as f:
-            retweets = json.load(f)
+            for line in f:
+                line = line.rstrip()
+                if line:
+                    rt = json.loads(line)
+                    retweets.append(rt)
         ranking = rank_by_followers_from_file(retweets)
         return get_ranking(ranking)
 
