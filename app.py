@@ -397,8 +397,13 @@ def update_propagation(num_users, selected_rows, data):
 def update_propagation_old(num_users, tweet_id):
     if num_users != '':
         filename = 'tweets/' + tweet_id + '.json'
+        retweets = []
         with open(filename, 'r') as f:
-            retweets = json.load(f)
+            for line in f:
+                line = line.rstrip()
+                if line:
+                    rt = json.loads(line)
+                    retweets.append(rt)
         days, hours, minutes, seconds = propagation_time_from_file(retweets, int(num_users))
         formatted_time = '{} days, {} hours, {} minutes, {} seconds'.format(days, hours, minutes, seconds)
         return html.Div('Time taken to propagate to {} users: {}'.format(num_users, formatted_time))
